@@ -1,27 +1,22 @@
 import * as React from "react";
 import { ethers } from "ethers";
-import './App.css';
+import "./App.css";
 
 export default function App() {
+  const gm = () => {};
 
-  const wave = () => {
-    
-  }
-  
   return (
     <div className="mainContainer">
-
       <div className="dataContainer">
-        <div className="header">
-        👋 Hey there!
-        </div>
+        <div className="header">👋 Hey there!</div>
 
         <div className="bio">
-        I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
+          This is my first ever solidity contract and blockchain project - want
+          to wish me gm?
         </div>
 
-        <button className="waveButton" onClick={wave}>
-          Wave at Me
+        <button className="waveButton" onClick={gm}>
+          gm?!
         </button>
       </div>
     </div>

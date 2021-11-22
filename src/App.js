@@ -7,16 +7,19 @@ export default function App() {
 
   return (
     <div className="mainContainer">
-      <div className="dataContainer">
-        <div className="header">👋 Hey there!</div>
+      <div className="header-container">
+        <div className="header-emoj">👋</div>
+        <div className="header">gm?</div>
+      </div>
 
+      <div className="action-container">
         <div className="bio">
-          This is my first ever solidity contract and blockchain project - want
-          to wish me gm?
+          Wish me a gm by interacting with my first solidity contract deployed
+          on rinkerby! wgmi!
         </div>
 
         <button className="waveButton" onClick={gm}>
-          gm?!
+          gm!
         </button>
       </div>
     </div>

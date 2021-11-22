@@ -1,27 +1,58 @@
+:root {
+  --shadow-color: 0deg 28% 55%;
+  --shadow-elevation-low: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.36),
+    0.5px 0.9px 1.2px -1.2px hsl(var(--shadow-color) / 0.36),
+    1.2px 2.1px 2.7px -2.5px hsl(var(--shadow-color) / 0.36);
+  --shadow-elevation-medium: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.38),
+    1px 1.7px 2.2px -0.8px hsl(var(--shadow-color) / 0.38),
+    2.4px 4.4px 5.6px -1.7px hsl(var(--shadow-color) / 0.38),
+    6px 10.6px 13.7px -2.5px hsl(var(--shadow-color) / 0.38);
+  --shadow-elevation-high: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.35),
+    1.8px 3.2px 4.1px -0.4px hsl(var(--shadow-color) / 0.35),
+    3.3px 5.9px 7.6px -0.7px hsl(var(--shadow-color) / 0.35),
+    5.4px 9.7px 12.5px -1.1px hsl(var(--shadow-color) / 0.35),
+    8.7px 15.5px 20px -1.4px hsl(var(--shadow-color) / 0.35),
+    13.6px 24.3px 31.3px -1.8px hsl(var(--shadow-color) / 0.35),
+    20.7px 36.9px 47.6px -2.1px hsl(var(--shadow-color) / 0.35),
+    30.5px 54.4px 70.2px -2.5px hsl(var(--shadow-color) / 0.35);
+}
+
 .mainContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   width: 100%;
   margin-top: 64px;
 }
 
-.dataContainer {
+.action-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 600px;
+  align-items: center;
+  text-align: center;
+}
+
+.header-container {
+  display: flex;
+  justify-content: center;
 }
 
 .header {
   text-align: center;
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 5.75rem;
+  font-weight: 700;
+  font-family: "Rowdies", cursive;
+  color: rgb(31, 31, 31);
+}
+
+.header-emoj {
+  font-size: 7.75rem;
+  padding: 5px;
 }
 
 .bio {
-  text-align: center;
-  color: gray;
-  margin-top: 16px;
+  width: 340px;
 }
 
 .waveButton {
@@ -30,5 +61,6 @@
   padding: 8px;
   border: 0;
   border-radius: 5px;
-  
+  width: 100px;
+  text-align: center;
 }

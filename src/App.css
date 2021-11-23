@@ -51,8 +51,15 @@
   padding: 5px;
 }
 
+.gm-counter {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgb(31, 31, 31);
+  padding: 10px;
+}
 .bio {
   width: 400px;
+  padding: 10px;
 }
 
 .waveButton {

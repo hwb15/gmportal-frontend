@@ -7,7 +7,9 @@ const App = () => {
   // Store user's wallet
   const [currentWallet, setCurrentWallet] = React.useState("");
   const [totalGms, setTotalGms] = useState(0);
-  const contractAddress = "0x3c731fDF135c73736B90Da2d78964922ddCCFb91";
+  const [allGms, setAllGms] = useState([]);
+
+  const contractAddress = "0x6d5E002927334b5008451cCe8a5f417515F1a041";
   const contractABI = abi.abi;
 
   const checkIfWalletIsConnected = async () => {
@@ -29,6 +31,7 @@ const App = () => {
         console.log(`Found an authorized acc`, account);
         setCurrentWallet(account);
         getTotalGms();
+        getAllGms();
       } else {
         console.log(`No accounts found`);
       }
@@ -81,6 +84,42 @@ const App = () => {
     }
   };
 
+  const getAllGms = async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const gmPortalContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+
+        // Call getAllGms from my solidity contract
+        const gms = await gmPortalContract.getAllGms();
+
+        console.log(gms);
+        // Only need address, time, message
+        let gmsCleaned = [];
+        gms.forEach((gm) => {
+          gmsCleaned.push({
+            address: gm.from,
+            timestamp: new Date(gm.timestamp * 1000),
+            message: gm.message,
+          });
+        });
+
+        setAllGms(gmsCleaned);
+        console.log(allGms);
+      } else {
+        console.log(`No eth obj`);
+      }
+    } catch (error) {
+      console.log(`Error`, error);
+    }
+  };
+
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
@@ -102,7 +141,7 @@ const App = () => {
         console.log(`Retrieved total gms, ${gmCount.toNumber()}`);
 
         // write to contract
-        const gmTxn = await gmPortalContract.gm();
+        const gmTxn = await gmPortalContract.gm("Hello Blockchain?");
         console.log(`Mining... ${gmTxn.hash}`);
 
         await gmTxn.wait();
@@ -130,19 +169,41 @@ const App = () => {
           I have been wished gm by {totalGms} people!
         </div>
         <div className="bio">
-          Wish me a gm by interacting with my first solidity contract deployed
-          on rinkerby! wgmi!
+          <p>
+            This is a small app that interacts with my first ever solidity
+            contract deployed on rinkerby testnet!
+          </p>
+
+          <p>
+            It is a simple contract that allows you to wish gm to someone, this
+            all gets recorded on the blockchain within the{" "}
+            <a
+              href="https://rinkeby.etherscan.io/address/0x3c731fdf135c73736b90da2d78964922ddccfb91"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              contract
+            </a>
+            .
+          </p>
         </div>
-
-        <button className="waveButton" onClick={gm}>
-          gm!
+        <button className="button" onClick={gm}>
+          Wish me gm here!
         </button>
-
         {!currentWallet && (
-          <button className="connect-button" onClick={connectToWallet}>
+          <button className="button" onClick={connectToWallet}>
             Connect Wallet!
           </button>
         )}
+        {allGms.map((gm, index) => {
+          return (
+            <div key={index}>
+              <div>Address: {gm.address}</div>
+              <div>Timestamp: {new Date(gm.timestamp).toString()}</div>
+              <div>Message: {gm.message}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -51,6 +51,27 @@
   font-size: var(--font-size-1);
 }
 
+.message-input-label {
+  display: block;
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.message-input-container {
+  margin-top: 0.25rem;
+}
+
+.message-input {
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem;
+  border-color: #d1d5db;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-width: 1px;
+}
+
 .button {
   margin: 10px;
   display: inline-flex;

@@ -8,6 +8,8 @@ const App = () => {
   const [currentWallet, setCurrentWallet] = React.useState("");
   const [totalGms, setTotalGms] = useState(0);
   const [allGms, setAllGms] = useState([]);
+  const [message, setMessage] = useState("");
+  const [isWaving, setIsWaving] = useState(false);
 
   const contractAddress = "0x6d5E002927334b5008451cCe8a5f417515F1a041";
   const contractABI = abi.abi;
@@ -110,8 +112,7 @@ const App = () => {
           });
         });
 
-        setAllGms(gmsCleaned);
-        console.log(allGms);
+        setAllGms(gmsCleaned.reverse());
       } else {
         console.log(`No eth obj`);
       }
@@ -124,7 +125,7 @@ const App = () => {
     checkIfWalletIsConnected();
   }, []);
 
-  const gm = async () => {
+  const gm = async (message) => {
     try {
       const { ethereum } = window;
 
@@ -141,9 +142,9 @@ const App = () => {
         console.log(`Retrieved total gms, ${gmCount.toNumber()}`);
 
         // write to contract
-        const gmTxn = await gmPortalContract.gm("Hello Blockchain?");
+        const gmTxn = await gmPortalContract.gm(message);
         console.log(`Mining... ${gmTxn.hash}`);
-
+        setMessage("");
         await gmTxn.wait();
         console.log(`Mined -- ${gmTxn.hash}`);
 
@@ -187,7 +188,23 @@ const App = () => {
             .
           </p>
         </div>
-        <button className="button" onClick={gm}>
+        <div>
+          <div className="message-input-container">
+            <textarea
+              rows={4}
+              name="comment"
+              id="comment"
+              className="message-input"
+              defaultValue={"Enter a message for me!"}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          </div>
+        </div>
+        <button
+          className="button"
+          onClick={(e) => gm(message)}
+          disabled={isWaving ? true : false}
+        >
           Wish me gm here!
         </button>
         {!currentWallet && (

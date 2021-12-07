@@ -65,11 +65,14 @@
 
 .message-input {
   display: block;
-  width: 100%;
+  width: 228px;
+  padding: 5px;
   border-radius: 0.375rem;
   border-color: #d1d5db;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   border-width: 1px;
+  outline: none;
+  caret-color: var(--gray-9);
 }
 
 .button {
@@ -98,4 +101,73 @@
 .waveButton:active {
   position: relative;
   inset-block-start: 2px;
+}
+
+.message-feed-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.message-feed {
+  border-top-width: 1px;
+  border-color: #e5e7eb;
+  padding-left: 0;
+}
+
+li {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  list-style: none;
+  border-top-width: 1px;
+  border-color: #e5e7eb;
+}
+
+.message-feed-item {
+  display: flex;
+}
+
+.message-image {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  margin: 10px;
+}
+
+.message-details-container {
+  margin-top: 0.25rem;
+  flex: 1 1 auto;
+}
+
+.message-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-from {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.message-time-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin-left: 0.55rem;
+}
+
+.message-text {
+  font-size: 0.875rem;
+  line-height: 1.65rem;
 }

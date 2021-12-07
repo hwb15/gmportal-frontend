@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
+import * as timeago from "timeago.js";
 import "./App.css";
 import abi from "./utils/GmPortal.json";
 
@@ -86,6 +87,16 @@ const App = () => {
     }
   };
 
+  function stringToHslColor(str, s, l) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    var h = hash % 360;
+    return "hsl(" + h + ", " + s + "%, " + l + "%)";
+  }
+
   const getAllGms = async () => {
     try {
       const { ethereum } = window;
@@ -109,9 +120,10 @@ const App = () => {
             address: gm.from,
             timestamp: new Date(gm.timestamp * 1000),
             message: gm.message,
+            color: stringToHslColor(gm.from, 30, 80),
           });
         });
-
+        console.log(gmsCleaned);
         setAllGms(gmsCleaned.reverse());
       } else {
         console.log(`No eth obj`);
@@ -166,9 +178,6 @@ const App = () => {
       </div>
 
       <div className="action-container">
-        <div className="gm-counter">
-          I have been wished gm by {totalGms} people!
-        </div>
         <div className="bio">
           <p>
             This is a small app that interacts with my first ever solidity
@@ -176,8 +185,8 @@ const App = () => {
           </p>
 
           <p>
-            It is a simple contract that allows you to wish gm to someone, this
-            all gets recorded on the blockchain within the{" "}
+            It is a simple contract that allows you to wish gm to me, this all
+            gets recorded on the blockchain within the{" "}
             <a
               href="https://rinkeby.etherscan.io/address/0x3c731fdf135c73736b90da2d78964922ddccfb91"
               target="_blank"
@@ -212,15 +221,32 @@ const App = () => {
             Connect Wallet!
           </button>
         )}
-        {allGms.map((gm, index) => {
-          return (
-            <div key={index}>
-              <div>Address: {gm.address}</div>
-              <div>Timestamp: {new Date(gm.timestamp).toString()}</div>
-              <div>Message: {gm.message}</div>
-            </div>
-          );
-        })}
+      </div>
+
+      <div className="message-feed-container">
+        <ul role="list" className="message-feed">
+          {allGms.map((gm, index) => (
+            <li key={index}>
+              <div className="message-feed-item">
+                <div
+                  className="message-image"
+                  style={{ backgroundColor: `${gm.color}` }}
+                />
+                <div className="message-details-container">
+                  <div className="message-details">
+                    <h3 className="message-from">
+                      {gm.address.substr(0, 35 - 1) + "..."}
+                    </h3>
+                    <p className="message-time-text">
+                      {timeago.format(gm.timestamp)}
+                    </p>
+                  </div>
+                  <p className="message-text">{gm.message}</p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

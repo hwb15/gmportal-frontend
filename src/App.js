@@ -12,7 +12,7 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [isWaving, setIsWaving] = useState(false);
 
-  const contractAddress = "0x6d5E002927334b5008451cCe8a5f417515F1a041";
+  const contractAddress = "0x0f3AC7fEBe3767E24c051a483d85edce54d17CfF";
   const contractABI = abi.abi;
 
   const checkIfWalletIsConnected = async () => {
@@ -133,8 +133,40 @@ const App = () => {
     }
   };
 
+  const onNewGm = (from, timestamp, message) => {
+    console.log(`New GM`, from, timestamp, message);
+    setAllGms((prevState) => [
+      ...prevState,
+      {
+        address: from,
+        timestamp: new Date(timestamp * 1000),
+        message: message,
+      },
+    ]);
+  };
+
   useEffect(() => {
     checkIfWalletIsConnected();
+
+    let gmPortalContract;
+
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      const gmPortalContract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+      gmPortalContract.on("NewGm", onNewGm);
+    }
+
+    return () => {
+      if (gmPortalContract) {
+        gmPortalContract.off("NewGm", onNewGm);
+      }
+    };
   }, []);
 
   const gm = async (message) => {
@@ -154,7 +186,7 @@ const App = () => {
         console.log(`Retrieved total gms, ${gmCount.toNumber()}`);
 
         // write to contract
-        const gmTxn = await gmPortalContract.gm(message);
+        const gmTxn = await gmPortalContract.gm(message, { gasLimit: 300000 });
         console.log(`Mining... ${gmTxn.hash}`);
         setMessage("");
         await gmTxn.wait();
@@ -188,7 +220,7 @@ const App = () => {
             It is a simple contract that allows you to wish gm to me, this all
             gets recorded on the blockchain within the{" "}
             <a
-              href="https://rinkeby.etherscan.io/address/0x3c731fdf135c73736b90da2d78964922ddccfb91"
+              href={`https://rinkeby.etherscan.io/address/${contractAddress}`}
               target="_blank"
               rel="noreferrer noopener"
             >
@@ -204,7 +236,8 @@ const App = () => {
               name="comment"
               id="comment"
               className="message-input"
-              defaultValue={"Enter a message for me!"}
+              placeholder="Type your message here..."
+              defaultValue={message}
               onChange={(e) => setMessage(e.target.value)}
             />
           </div>
